@@ -1,0 +1,514 @@
+--
+-- $Header: /plus/v4/spam/precious/files/ACTIVE/demobld.sql,v 1.1 1995/12/19 02:45:17 cjones Exp $
+-- Copyright (c) Oracle Corporation 1988, 1993.  All Rights Reserved.
+--
+--
+--   This script creates the SQL*Plus demonstration tables.
+--
+--   It should be STARTed by each user wishing to access the tables.
+--
+
+set termout on
+prompt Building demonstration tables.  Please wait.
+set termout off
+set feedback off
+
+ALTER SESSION SET NLS_LANGUAGE = AMERICAN;
+ALTER SESSION SET NLS_TERRITORY = AMERICA;
+
+DROP TABLE EMP PURGE;
+DROP TABLE DEPT PURGE;
+DROP TABLE BONUS PURGE;
+DROP TABLE SALGRADE PURGE;
+DROP TABLE DUMMY PURGE;
+
+CREATE TABLE EMP
+       (EMPNO NUMBER(4) NOT NULL,
+        ENAME VARCHAR2(10),
+        JOB VARCHAR2(9),
+        MGR NUMBER(4),
+        HIREDATE DATE,
+        SAL NUMBER(7,2),
+        COMM NUMBER(7,2),
+        DEPTNO NUMBER(2));
+
+INSERT INTO EMP VALUES
+        (7369,'SMITH','CLERK',7902,'17-DEC-80',800,NULL,20);
+INSERT INTO EMP VALUES
+        (7499,'ALLEN','SALESMAN',7698,'20-FEB-81',1600,300,30);
+INSERT INTO EMP VALUES
+        (7521,'WARD','SALESMAN',7698,'22-FEB-81',1250,500,30);
+INSERT INTO EMP VALUES
+        (7566,'JONES','MANAGER',7839,'2-APR-81',2975,NULL,20);
+INSERT INTO EMP VALUES
+        (7654,'MARTIN','SALESMAN',7698,'28-SEP-81',1250,1400,30);
+INSERT INTO EMP VALUES
+        (7698,'BLAKE','MANAGER',7839,'1-MAY-81',2850,NULL,30);
+INSERT INTO EMP VALUES
+        (7782,'CLARK','MANAGER',7839,'9-JUN-81',2450,NULL,10);
+INSERT INTO EMP VALUES
+        (7788,'SCOTT','ANALYST',7566,'09-DEC-82',3000,NULL,20);
+INSERT INTO EMP VALUES
+        (7839,'KING','PRESIDENT',NULL,'17-NOV-81',5000,NULL,10);
+INSERT INTO EMP VALUES
+        (7844,'TURNER','SALESMAN',7698,'8-SEP-81',1500,0,30);
+INSERT INTO EMP VALUES
+        (7876,'ADAMS','CLERK',7788,'12-JAN-83',1100,NULL,20);
+INSERT INTO EMP VALUES
+        (7900,'JAMES','CLERK',7698,'3-DEC-81',950,NULL,30);
+INSERT INTO EMP VALUES
+        (7902,'FORD','ANALYST',7566,'3-DEC-81',3000,NULL,20);
+INSERT INTO EMP VALUES
+        (7934,'MILLER','CLERK',7782,'23-JAN-82',1300,NULL,10);
+
+CREATE TABLE DEPT
+       (DEPTNO NUMBER(2),
+        DNAME VARCHAR2(14),
+        LOC VARCHAR2(13) );
+
+INSERT INTO DEPT VALUES
+        (10,'ACCOUNTING','NEW YORK');
+INSERT INTO DEPT VALUES (20,'RESEARCH','DALLAS');
+INSERT INTO DEPT VALUES
+        (30,'SALES','CHICAGO');
+INSERT INTO DEPT VALUES
+        (40,'OPERATIONS','BOSTON');
+
+CREATE TABLE BONUS
+        (
+        ENAME VARCHAR2(10),
+        JOB VARCHAR2(9),
+        SAL NUMBER,
+        COMM NUMBER
+        );
+
+CREATE TABLE SALGRADE
+      ( GRADE NUMBER,
+        LOSAL NUMBER,
+        HISAL NUMBER );
+
+INSERT INTO SALGRADE VALUES (1,700,1200);
+INSERT INTO SALGRADE VALUES (2,1201,1400);
+INSERT INTO SALGRADE VALUES (3,1401,2000);
+INSERT INTO SALGRADE VALUES (4,2001,3000);
+INSERT INTO SALGRADE VALUES (5,3001,9999);
+
+CREATE TABLE DUMMY
+      ( DUMMY NUMBER );
+
+INSERT INTO DUMMY VALUES (0);
+
+COMMIT;
+
+EXIT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sales Order System
+----------------------------
+Table Name--Client_Master
+Column Name 	Data type
+Client_No 		Varchar2(6)(PK)
+Name		Varchar2(20)
+Address1		Varchar2(30)
+Address2		Varchar2(30)
+City 		varchar2(15)
+State		varchar2(15)
+Pincode		Number(6)
+Bal_Due		Number(10,2)
+>create table Client_Master
+(Client_No Varchar2(6)  constraint pk_cno primary key,
+Name		Varchar2(20) constraint nn_cname not null,
+Address1		Varchar2(30),
+Address2		Varchar2(30),
+City 		varchar2(15),
+State		varchar2(15),
+Pincode		Number(6),
+Bal_Due		Number(10,2))
+/
+-------------------------------------------------------------------------------------------------------
+CREATE TABLE product_master
+(product_no varchar2(6) constraint 
+pk_product_pk  primary key,
+Description varchar2(25),
+unit_measure varchar2(10),
+Qty_on_hand number(8),
+reorder_lvl number(8),
+cost_price number(10,2),
+selling_price number(8,2))
+-------------------------------------------------------------------------------------------------------
+Table Name:           Sales_order(Master)
+(Use to store order header information)
+Column Name	Data Type
+S_order_no	Varchar2(6)
+Order_date	Date
+Client_no		Varchar2(6)(FK)
+Order_status	Char(2)
+> create table Sales_order
+(S_order_no Varchar2(6) constraint pk_sno primary key,
+Order_date Date default sysdate,
+Client_no  varchar2(6) constraint fk_cno references
+client_master(client_no),
+Order_status       char(2))
+/
+
+---------------------------------------------------------------------------------------------
+Table Name :Sales_Order_Details
+(Use to store information about order detailes)
+Column-name	Data Type
+S_order_no	Varchar2(6)(FK)
+Product_no	Varchar2(6)(FK)
+Product_rate	Number(8,2)
+Qty_ordered	Number(8)
+s_Order_no,product_no have one Composite_PK
+
+---------------
+> create table Sales_Order_Details
+(S_order_no	Varchar2(6) 
+constraint fk_sono references sales_order(s_order_no),
+Product_no	Varchar2(6)
+constraint fk_pno references product_master
+(product_no),
+Product_rate	Number(8,2),
+Qty_ordered	Number(8),
+constraint cpk_sp_no primary key(s_order_no,product_no))
+/
+-------------------------------------------------------------------------
+Tablename--Challan_Header(Master)
+Column-Name
+------------------------
+Challan_no Varchar2(6) Pk
+Challan_date Date--Challan_date cannot be greater than system date.
+S_order_no varchar2(6)  (fk)
+Billed_YN char   (Is the challan Billed?)
+
+>create table challan_header
+(Challan_no Varchar2(6) constraint pk_cn primary key,
+Challan_date Date,
+S_order_no varchar2(6),
+Billed_YN char)
+/---------------------
+Table_name   --Challan_Detailes
+Column Name       Datatype
+Challan_no	varchar2(6)(fk)
+Product_no varchar2(6) (fk)
+qty_disp  number(8)
+
+>create table Challan_Detailes
+(Challan_no varchar2(6) constraint fk_cn references challan_header(challan_no),
+Product_no varchar2(6) constraint fk_pno references product_master(product_no),
+qty_disp  number(8))
+-----------------------------------------------------------------------------
+Table Name--Delivery_Schedule
+Desc:Use to store information about order delivery shedule
+
+Column_name	Data type
+S_Order_no	Varchar2(6)(fk)
+Delivery_date	Date(Date when material must be delivered)
+Delivery_address	Varchar2(100)
+product_no 	varchar2(6)
+Quantity		Number(8)
+----------------------------------------------------------------------------------------
+TableName	:Order_TermsConditions
+Desc:Use to store information about order details
+
+Column_name	Datatype
+S_Order_no	Varchar2(6)(fk)
+Terms_Conditions	Varchar2(1000) (Terms and Conditions specified for the order).
+---------------------------
+
+
+
+Prog1:
+DECLARE
+ sono_fk_vio EXCEPTION;
+ pno_fk_vio exception;
+ PRAGMA EXCEPTION_INIT(sono_fk_vio,-02291);
+ PRAGMA EXCEPTION_INIT(pno_fk_vio,-02291);
+ BEGIN
+insert into Sales_Order_Details
+values('O105','P101',50,30);
+ EXCEPTION
+ when sono_fk_vio or pno_fk_vio then
+ display('Sales order no or  product no  is  not  exists');
+ END;
+
+DECLARE
+ i product_master%rowtype;
+ BEGIN
+   i.product_no:='&prd_no';
+  SELECT Qty_on_hand,reorder_lvl  INTO
+    i.qty_on_hand,i.reorder_lvl
+    FROM product_master
+  WHERE product_no=i.product_no;
+   IF i.Qty_on_hand<i.reorder_lvl THEN
+            GOTO updation;
+   ELSE
+            GOTO noupdation;
+    END IF;
+    <<updation>>
+       UPDATE product_master
+       SET qty_on_hand=i.Qty_on_hand+i.reorder_lvl
+       WHERE product_no=i.product_no;
+       RETURN;
+    <<noupdation>>
+ display('There are enogh items');
+    RETURN;
+  END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--
+-- $Header: /plus/v4/spam/precious/files/ACTIVE/demobld.sql,v 1.1 1995/12/19 02:45:17 cjones Exp $
+-- Copyright (c) Oracle Corporation 1988, 1993.  All Rights Reserved.
+--
+--
+--   This script creates the SQL*Plus demonstration tables.
+--
+--   It should be STARTed by each user wishing to access the tables.
+--
+
+set termout on
+prompt Building demonstration tables.  Please wait.
+set termout off
+set feedback off
+
+ALTER SESSION SET NLS_LANGUAGE = AMERICAN;
+ALTER SESSION SET NLS_TERRITORY = AMERICA;
+
+DROP TABLE EMP;
+DROP TABLE DEPT;
+DROP TABLE BONUS;
+DROP TABLE SALGRADE;
+DROP TABLE DUMMY;
+
+CREATE TABLE EMP
+       (EMPNO NUMBER(4) NOT NULL,
+        ENAME VARCHAR2(10),
+        JOB VARCHAR2(9),
+        MGR NUMBER(4),
+        HIREDATE DATE,
+        SAL NUMBER(7,2),
+        COMM NUMBER(7,2),
+        DEPTNO NUMBER(2));
+
+INSERT INTO EMP VALUES
+        (7369,'SMITH','CLERK',7902,'17-DEC-80',800,NULL,20);
+INSERT INTO EMP VALUES
+        (7499,'ALLEN','SALESMAN',7698,'20-FEB-81',1600,300,30);
+INSERT INTO EMP VALUES
+        (7521,'WARD','SALESMAN',7698,'22-FEB-81',1250,500,30);
+INSERT INTO EMP VALUES
+        (7566,'JONES','MANAGER',7839,'2-APR-81',2975,NULL,20);
+INSERT INTO EMP VALUES
+        (7654,'MARTIN','SALESMAN',7698,'28-SEP-81',1250,1400,30);
+INSERT INTO EMP VALUES
+        (7698,'BLAKE','MANAGER',7839,'1-MAY-81',2850,NULL,30);
+INSERT INTO EMP VALUES
+        (7782,'CLARK','MANAGER',7839,'9-JUN-81',2450,NULL,10);
+INSERT INTO EMP VALUES
+        (7788,'SCOTT','ANALYST',7566,'09-DEC-82',3000,NULL,20);
+INSERT INTO EMP VALUES
+        (7839,'KING','PRESIDENT',NULL,'17-NOV-81',5000,NULL,10);
+INSERT INTO EMP VALUES
+        (7844,'TURNER','SALESMAN',7698,'8-SEP-81',1500,0,30);
+INSERT INTO EMP VALUES
+        (7876,'ADAMS','CLERK',7788,'12-JAN-83',1100,NULL,20);
+INSERT INTO EMP VALUES
+        (7900,'JAMES','CLERK',7698,'3-DEC-81',950,NULL,30);
+INSERT INTO EMP VALUES
+        (7902,'FORD','ANALYST',7566,'3-DEC-81',3000,NULL,20);
+INSERT INTO EMP VALUES
+        (7934,'MILLER','CLERK',7782,'23-JAN-82',1300,NULL,10);
+
+CREATE TABLE DEPT
+       (DEPTNO NUMBER(2),
+        DNAME VARCHAR2(14),
+        LOC VARCHAR2(13) );
+
+INSERT INTO DEPT VALUES
+        (10,'ACCOUNTING','NEW YORK');
+INSERT INTO DEPT VALUES (20,'RESEARCH','DALLAS');
+INSERT INTO DEPT VALUES
+        (30,'SALES','CHICAGO');
+INSERT INTO DEPT VALUES
+        (40,'OPERATIONS','BOSTON');
+
+CREATE TABLE BONUS
+        (
+        ENAME VARCHAR2(10),
+        JOB VARCHAR2(9),
+        SAL NUMBER,
+        COMM NUMBER
+        );
+
+CREATE TABLE SALGRADE
+      ( GRADE NUMBER,
+        LOSAL NUMBER,
+        HISAL NUMBER );
+
+INSERT INTO SALGRADE VALUES (1,700,1200);
+INSERT INTO SALGRADE VALUES (2,1201,1400);
+INSERT INTO SALGRADE VALUES (3,1401,2000);
+INSERT INTO SALGRADE VALUES (4,2001,3000);
+INSERT INTO SALGRADE VALUES (5,3001,9999);
+
+CREATE TABLE DUMMY
+      ( DUMMY NUMBER );
+
+INSERT INTO DUMMY VALUES (0);
+
+COMMIT;
+
+EXIT;

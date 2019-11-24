@@ -1,0 +1,35 @@
+﻿import java.sql.*;
+public class TestJDBC implements DBSetting{
+
+	public static void main(String[] args) throws SQLException {
+		
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost/assignment","root","Mysql");
+			
+			
+			Statement stmt = con.createStatement();
+			
+			String sql="drop Database test2";
+
+			System.out.println(stmt.execute(sql));
+			
+			
+			System.out.println("Database created");
+			
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		
+		catch (Exception e){
+			System.out.println(e);
+			
+		}
+	
+
+	}
+
+}

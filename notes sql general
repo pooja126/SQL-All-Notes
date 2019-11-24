@@ -1,0 +1,64 @@
+=product_details----------
+id
+prod_name varchar2
+brand_name
+purchase price smame 7,2
+sale price number 7,2
+
+--->create table Product_details (Product_id varchar2(10),Product_name varchar2(20),Brand_name varchar2(20),Purchase_price number(7,2),Sale_price number(7,2));
+
+
+=purchase----------
+bill_id        varchar 2
+product_id      varchar2
+quantity        number
+purchase_date       date  
+bill_num        varchar 2
+party_name
+party_mob_no
+
+-sale----------
+prod_id       number
+sale_date
+sale_type         vc2
+cust_name           varchar2
+cust_mob_no       number
+sale_quantity    num 7,2
+total_amt           number
+
+QUERIONS
+1-display emp details whos designation is sales_man or dept is 30
+	select * from emp where job="salesman" or dept_no=30;
+
+2-display unique jobs from emp table
+	 select unique job from emp;
+
+3-display emp details whos earning salary is more than 3000
+  	select * from emp where sal>3000;
+
+4- disp emp deatils to join after may 1981
+	select * from emp where hiredate<01-may-1981;
+
+
+
+
+09-08-19
+TO_CHAR
+TO_DATE
+TO_NUMBER
+D
+G
+$
+leading
+decimal group indicator
+MI
+<PR>
+zero
+C courancy
+RN,rn roman
+
+
+
+
+
+

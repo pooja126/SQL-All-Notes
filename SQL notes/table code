@@ -1,0 +1,10 @@
+CREATE TABLE EMP
+(EMPNO NUMBER(4) constraint emp_empno_pk primary key,
+ENAME VARCHAR2(10) constraint emp_ename_nn not null,
+JOB VARCHAR2(9) constraint emp_job_nn not null,
+MGR NUMBER(4) constraint emp_mgr_fk references emp(empno),
+HIREDATE DATE constraint emp_hiredate_nn not null,
+SAL NUMBER(7,2) constraint emp_sal_c check(sal>1500) constraint emp_sal_nn not null,
+COMM NUMBER(7,2),
+DEPTNO NUMBER(2))
+/

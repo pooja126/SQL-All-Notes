@@ -1,0 +1,164 @@
+create table emp (emp_no number(4) constraint emp_empno_PK Primary key,ename varchar2(10) constraint emp_ename_nn ?Not Null,job varchar2(10) constraint emp_job_nn Not Null,mgr number(4) constraint emp_mgr_FK References emp(empno),
+  2  Hiredate date constraint emp_Hiredate_nn Not Null,sal number(7,2) constraint emp_sal_nn Not Null constraint emp_sal_c check(sal>1000),
+  3  comm number(7,2),deptno number(2) constraint emp_deptno_FK References dept(deptno));
+create table emp (emp_no number(4) constraint emp_empno_PK Primary key,
+
+
+
+
+create table emp (emp_no number(4) constraint emp_empno_PK Primary key,
+ename varchar2(10) constraint emp_ename_nn Not Null,
+job varchar2(10) constraint emp_job_nn Not Null,
+mgr number(4) constraint emp_mgr_FK References emp(emp_no),
+Hiredate date constraint emp_Hiredate_nn Not Null,
+sal number(7,2) constraint emp_sal_nn Not Null constraint emp_sal_c check(sal>1000),
+comm number(7,2));
+
+
+
+
+ create table emp (emp_no number(4) constraint emp_emp_no_PK Primary key,
+    ename varchar2(10) constraint emp_ename_nn Not Null,
+    mgr number(4) constraint emp_mgr_FK References emp(emp_no),
+    sal number(7,2) constraint emp_sal_nn Not Null constraint emp_sal_c check(sal>1000),
+   deptno number(2) constraint emp_deptno_FK References dept(deptno));
+
+
+ create table emp( deptno number(2) constraint emp_deptno_FK References dept(deptno));
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+SQL> Alter table emp enable constraint emp_deptNo_FK;
+Alter table emp enable constraint emp_deptNo_FK
+
+
+
+
+
+ALTER TABLE Emp ADD Constraint Emp_Mgr_FK  FOREIGN KEY(Mgr) REFERENCES   Emp(empno);
+
+
+
+ALTER TABLE Emp ADD Constraint Emp_deptno_FK  FOREIGN KEY(deptno) REFERENCES   dept(deptno);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*
+ERROR at line 1:
+ORA-02430: cannot enable constraint (EMP_DEPTNO_FK) - no such constraint
+
+
+SQL>
+SQL>  create table emp (emp_no number(4) constraint emp_emp_no_PK Primary key,
+  2      ename varchar2(10) constraint emp_ename_nn Not Null,
+  3      mgr number(4) constraint emp_mgr_FK References emp(emp_no),
+  4      sal number(7,2) constraint emp_sal_nn Not Null constraint emp_sal_c check(sal>1000),
+  5     deptno number(2) constraint emp_deptno_FK References dept(deptno));
+ create table emp (emp_no number(4) constraint emp_emp_no_PK Primary key,
+              *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> INSERT INTO DEPT VALUES
+  2          (10,'ACCOUNTING','NEW YORK');
+
+1 row created.
+
+SQL> INSERT INTO EMP VALUES
+  2          (7839,'KING','PRESIDENT',NULL,'17-NOV-81',5000,NULL,10);
+INSERT INTO EMP VALUES
+            *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> INSERT INTO EMP VALUES
+  2          (7839,'KING','PRESIDENT',NULL,'17-NOV-81',5000,NULL,10);
+INSERT INTO EMP VALUES
+            *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> INSERT INTO EMP VALUES
+  2          (7839,'KING','PRESIDENT',NULL,'17-NOV-81',5000,NULL,10);
+INSERT INTO EMP VALUES
+            *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> desc emp
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_NO                                    NOT NULL NUMBER(4)
+
+SQL> drop table emp purge;
+
+Table dropped.
+
+SQL>
+SQL>
+SQL>  create table emp (emp_no number(4) constraint emp_emp_no_PK Primary key,
+  2      ename varchar2(10) constraint emp_ename_nn Not Null,
+  3      mgr number(4) constraint emp_mgr_FK References emp(emp_no),
+  4      sal number(7,2) constraint emp_sal_nn Not Null constraint emp_sal_c check(sal>1000),
+  5     deptno number(2) constraint emp_deptno_FK References dept(deptno));
+   deptno number(2) constraint emp_deptno_FK References dept(deptno))
+
+
+
+INSERT INTO EMP VALUES ( deptno number(2) constraint emp_deptno_FK References dept(deptno));
+
+
+                                                             *
+ERROR at line 5:
+ORA-02270: no matching unique or primary key for this column-list
+
+
+SQL> desc user_constraints;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ OWNER                                     NOT NULL VARCHAR2(30)
+ CONSTRAINT_NAME                           NOT NULL VARCHAR2(30)
+ CONSTRAINT_TYPE                                    VARCHAR2(1)
+ TABLE_NAME                                NOT NULL VARCHAR2(30)
+ SEARCH_CONDITION                                   LONG
+ R_OWNER                                            VARCHAR2(30)
+ R_CONSTRAINT_NAME                                  VARCHAR2(30)
+ DELETE_RULE                                        VARCHAR2(9)
+ STATUS                                             VARCHAR2(8)
+ DEFERRABLE                                         VARCHAR2(14)
+ DEFERRED                                           VARCHAR2(9)
+ VALIDATED                                          VARCHAR2(13)
+ GENERATED                                          VARCHAR2(14)
+ BAD                                                VARCHAR2(3)
+ RELY                                               VARCHAR2(4)
+ LAST_CHANGE                                        DATE
+ INDEX_OWNER                                        VARCHAR2(30)
+ INDEX_NAME                                         VARCHAR2(30)
+ INVALID                                            VARCHAR2(7)
+ VIEW_RELATED                                       VARCHAR2(14)
+
+SQL> alter table dept modify loc Default 'pune';
+
+Table altered.
+
+SQL>
